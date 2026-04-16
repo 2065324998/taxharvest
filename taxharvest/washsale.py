@@ -1,18 +1,8 @@
 """Wash sale detection and cost basis adjustment.
 
-IRS Publication 550 defines wash sale rules for securities:
-
 A wash sale occurs when you sell stock or securities at a loss and,
-within 30 days before or after the sale, you:
-
-    1. Buy substantially identical stock or securities,
-    2. Acquire substantially identical stock or securities in a
-       fully taxable trade, or
-    3. Acquire a contract or option to buy substantially identical
-       stock or securities.
-
-The 61-day window (30 days before + sale day + 30 days after) is the
-wash sale period.  When a wash sale is triggered:
+within the 30-day period following the sale, you buy substantially
+identical stock or securities.  When triggered:
 
     - The loss on the sale is DISALLOWED for tax purposes.
     - The disallowed loss is ADDED to the cost basis of the
@@ -28,15 +18,13 @@ disallowed and 30 shares' worth is allowed.
 Substantially identical securities
 ----------------------------------
 For this implementation, two securities are substantially identical
-if and only if they share the same ticker symbol.  (In practice the
-IRS definition is broader, but symbol matching is the standard
-automated approach.)
+if and only if they share the same ticker symbol.
 
 Replacement share matching
 --------------------------
 When a wash sale is detected, replacement shares are matched to the
-sale using FIFO ordering of purchases within the 61-day window.  If
-multiple purchases fall in the window, the earliest purchase is
+sale using FIFO ordering of purchases within the wash sale window.
+If multiple purchases fall in the window, the earliest purchase is
 matched first.  The disallowed loss is allocated proportionally
 across matched replacement lots based on the number of shares each
 lot contributes.
