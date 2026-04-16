@@ -40,16 +40,6 @@ multiple purchases fall in the window, the earliest purchase is
 matched first.  The disallowed loss is allocated proportionally
 across matched replacement lots based on the number of shares each
 lot contributes.
-
-Cascading adjustments
----------------------
-When a lot's cost basis is increased by a wash sale adjustment,
-any subsequent sale of that lot must use the UPDATED basis to
-determine whether it too produces a loss.  A sale that appeared
-to be a gain at face value may become a loss after the basis
-adjustment, potentially triggering another wash sale.  Sales
-must therefore be evaluated in chronological order with lot
-bases updated between evaluations.
 """
 
 from datetime import date, timedelta
@@ -60,8 +50,7 @@ def detect_wash_sales(portfolio: Portfolio) -> None:
     """Scan all sales in the portfolio and apply wash sale rules.
 
     For each sale at a loss, checks whether substantially identical
-    securities were purchased within the 61-day wash sale window
-    (30 days before through 30 days after the sale date).
+    securities were purchased within the wash sale window.
 
     When a wash sale is detected:
         1. The loss (or portion thereof) is disallowed.
